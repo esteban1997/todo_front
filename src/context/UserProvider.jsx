@@ -61,7 +61,7 @@ export const UserProvider = ({children}) => {
     loginUser(form)
   }
 
-  const closeSession = () => {
+  const logoutAppUser = () => {
     setUser((prevUser)=>({
       ...prevUser,
       token:'',
@@ -70,7 +70,7 @@ export const UserProvider = ({children}) => {
   }
 
   return (
-    <UserContext.Provider value={{user,setUser,loginAppUser,closeSession}}>
+    <UserContext.Provider value={{user,setUser,loginAppUser,logoutAppUser}}>
       {children}
     </UserContext.Provider>
   )

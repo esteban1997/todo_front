@@ -3,27 +3,6 @@ import {TodoContext} from './TodoContext'
 
 export const TodoProvider = ({children}) => {
   
-  const deleteTodo = (id) => {
-    const action = {
-      type:'[TODO] Eliminar todo',
-      payload:id
-    }
-    dispatch(action)
-  }
-
-  const todoReducer = (state = initialState,action={}) =>{
-    switch(action.type){
-      case '[TODO] Actualizar todo':
-        console.log('action.payload')
-        console.log(action.payload)
-        return action.payload
-      case '[TODO] Eliminar todo':
-        return state.filter(compra=> compra.id!== action.payload)
-      default:
-        return state
-    }
-  }
-
   const updateProducts = (data) =>{
     const action = {
       type:'[TODO] Actualizar todo',
@@ -32,6 +11,14 @@ export const TodoProvider = ({children}) => {
     dispatch(action)
   }
 
+  const deleteTodo = (id) => {
+    const action = {
+      type:'[TODO] Eliminar todo',
+      payload:id
+    }
+    dispatch(action)
+  }
+  
   const fetchProductos = async (user) => {
     if(user.token!=''){
       const configUser = {
@@ -49,6 +36,19 @@ export const TodoProvider = ({children}) => {
       if(todo_data[0].items&&todo_data[0].items.length>0){
         updateProducts(todo_data[0].items);
       }
+    }
+  }
+
+  const todoReducer = (state = [],action={}) =>{
+    switch(action.type){
+      case '[TODO] Actualizar todo':
+        console.log('action.payload')
+        console.log(action.payload)
+        return action.payload
+      case '[TODO] Eliminar todo':
+        return state.filter(compra=> compra.id!== action.payload)
+      default:
+        return state
     }
   }
 

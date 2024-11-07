@@ -11,21 +11,21 @@ export const LoginPage = () => {
 
   const {formState,onInputChange} = useForm(loginForm)
 
-  const {user,loginAppUser,closeSession} = useContext(UserContext)
+  const {user,loginAppUser,logoutAppUser} = useContext(UserContext)
 
-  const loginUser = (event) => {
+  const loginLogoutUser = (event) => {
     if(!user.loged){
       event.preventDefault()
       loginAppUser(formState)
     }else{
       event.preventDefault()
-      closeSession(formState)
+      logoutAppUser()
     }
   }
   
   return (
     <>
-      <form onSubmit={loginUser}>
+      <form onSubmit={loginLogoutUser}>
         <div className="form-group">
           <label htmlFor="username">Usuario</label>
           <input 
@@ -47,7 +47,9 @@ export const LoginPage = () => {
           placeholder="Contraseña"
           onChange={onInputChange}/>
         </div>
-        {  !user.loged ? <button type="submit" className="btn btn-primary">Logear</button> : <button type="submit" className="btn btn-primary">cerrar sesion</button>
+        {  !user.loged ? 
+          <button type="submit" className="btn btn-primary">Logear</button> : 
+          <button type="submit" className="btn btn-primary">cerrar sesion</button>
         }
       </form>
     </>
