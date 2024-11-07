@@ -12,9 +12,6 @@ export const TodoPage = () => {
     fetchProductos(user);
   }, [user]);
 
-  console.log('todoList');
-  console.log(todoList);
-
   return (
     <>
     
