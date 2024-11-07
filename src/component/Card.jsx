@@ -1,7 +1,6 @@
 import React from 'react'
 
 export const Card = ({todo,id,description,origin_task,state_id,deleteTodo}) => {
-  console.log(todo)
   return (
     <div className='card' key = {id}>
       <h1>{id}</h1>

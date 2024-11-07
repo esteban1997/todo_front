@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useReducer, useState } from 'react'
 import {UserContext} from './UserContext'
 
 export const UserProvider = ({children}) => {
 
-  const userData = {
+  const user_data_base = {
     id:0,
     username:'',
     first_name:'',
@@ -14,7 +14,13 @@ export const UserProvider = ({children}) => {
     loged:false
   }
 
-  const [user, setUser] = useState(userData)
+  const updateUser = (data) =>{
+    const action = {
+      type:'[USER] Actualizar Usuario',
+      payload:data
+    }
+    dispatch(action)
+  }
 
   const loginUser = async (form) => {
 
@@ -41,8 +47,8 @@ export const UserProvider = ({children}) => {
       const user_response = await fetch('http://127.0.0.1:8000/users/me/',configUser)
       const user_data = await user_response.json()
 
-      setUser((prev)=>({
-        ...prev,
+      updateUser({
+        ...user,
         id:user_data.id,
         username:user_data.username,
         first_name:user_data.first_name,
@@ -51,7 +57,8 @@ export const UserProvider = ({children}) => {
         second_lastname:user_data.second_lastname,
         token:token_data.access_token,
         loged:true
-      }))
+      })
+
     }else{
       alert('Credenciales incorrectas')
     }
@@ -62,15 +69,28 @@ export const UserProvider = ({children}) => {
   }
 
   const logoutAppUser = () => {
-    setUser((prevUser)=>({
-      ...prevUser,
-      token:'',
-      loged:false
-    }))
+    updateUser(user_data_base)
   }
 
+  const userReducer = (state = [],action={}) =>{
+    switch(action.type){
+      case '[USER] Actualizar Usuario':
+        if(action.payload.id==0){
+          sessionStorage.removeItem('user');
+        }else{
+          sessionStorage.setItem('user', JSON.stringify(action.payload));
+        }
+        return action.payload
+      default:
+        return state
+    }
+  }
+  const storedUser = sessionStorage.getItem('user');
+  const initialState = storedUser ? JSON.parse(storedUser) : user_data_base
+  const [user, dispatch] = useReducer(userReducer, initialState)
+
   return (
-    <UserContext.Provider value={{user,setUser,loginAppUser,logoutAppUser}}>
+    <UserContext.Provider value={{user,loginAppUser,logoutAppUser}}>
       {children}
     </UserContext.Provider>
   )

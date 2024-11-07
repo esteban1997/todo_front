@@ -29,21 +29,19 @@ export const TodoProvider = ({children}) => {
         }
       }
       
-      const todo_response = await fetch('http://127.0.0.1:8000/todo/me/items',configUser)
+      const todo_response = await fetch('http://127.0.0.1:8000/todo/me/items/',configUser)
       const todo_data = await todo_response.json()
-      console.log('todo_data.items')
-      console.log(todo_data[0].items.length)
       if(todo_data[0].items&&todo_data[0].items.length>0){
         updateProducts(todo_data[0].items);
       }
+    }else{
+      updateProducts([]);
     }
   }
 
   const todoReducer = (state = [],action={}) =>{
     switch(action.type){
       case '[TODO] Actualizar todo':
-        console.log('action.payload')
-        console.log(action.payload)
         return action.payload
       case '[TODO] Eliminar todo':
         return state.filter(compra=> compra.id!== action.payload)
