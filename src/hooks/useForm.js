@@ -11,9 +11,18 @@ export const useForm = (initialForm={}) => {
     })
   }
 
+  const onSelectChange = (event) => {
+    const {name,value} = event.target
+    setFormState({
+      ...formState,
+      [name]:value
+    })
+  }
+
   return {
     ...formState,
     formState,
-    onInputChange
+    onInputChange,
+    onSelectChange
   }
 }
