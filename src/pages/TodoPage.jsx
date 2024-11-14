@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { Card } from '../component/Card'
 import { TodoContext } from '../context/TodoContext'
 import { UserContext } from '../context/UserContext'
@@ -7,7 +7,7 @@ import { TodoForm } from '../component/TodoForm'
 
 export const TodoPage = () => {
 
-  const {todoList,deleteTodo,updateTodo,fetchTodo,registerTodo} = useContext(TodoContext)
+  const {todoList,deleteTodo,updateTodoService,fetchTodo,registerTodo} = useContext(TodoContext)
   const {user} = useContext(UserContext)
 
   useEffect(() => {
@@ -34,7 +34,8 @@ export const TodoPage = () => {
             origin_task={todo.origin_task} 
             state_id={todo.state_id} 
             deleteTodo={deleteTodo}
-            updateTodo={updateTodo}
+            updateTodo={updateTodoService}
+            user={user}
           />
         )
       ) : (

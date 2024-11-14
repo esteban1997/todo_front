@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { StateSelect } from './StateSelect'
 import { useForm } from '../hooks/useForm'
 import { UserContext } from '../context/UserContext'

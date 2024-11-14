@@ -1,9 +1,9 @@
-import React, { useReducer} from 'react'
+import {useReducer} from 'react'
 import {TodoContext} from './TodoContext'
 
 export const TodoProvider = ({children}) => {
   
-  const updateTodo = (data) =>{
+  const setTodo = (data) =>{
     const action = {
       type:'[TODO] Actualizar todo',
       payload:data
@@ -40,17 +40,17 @@ export const TodoProvider = ({children}) => {
       const todo_response = await fetch('http://127.0.0.1:8000/todo/me/items/',configUser)
       const todo_data = await todo_response.json()
       if(todo_data[0].items&&todo_data[0].items.length>0){
-        updateTodo(todo_data[0].items);
+        setTodo(todo_data[0].items);
       }
     }else{
-      updateTodo([]);
+      setTodo([]);
     }
   }
 
-  const registerTodo = async (user,form) => {
+  const registerTodo = async (user,data) => {
 
-    form = {
-      ...form,
+    data = {
+      ...data,
       "user_id":user.id
     }
 
@@ -61,7 +61,7 @@ export const TodoProvider = ({children}) => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${user.token}`,
         },
-        body: JSON.stringify(form)
+        body: JSON.stringify(data)
       }
       
       const result = await fetch('http://127.0.0.1:8000/todo/create_todo',configUser)
@@ -72,26 +72,30 @@ export const TodoProvider = ({children}) => {
     }
   }
 
-  const updateTodoService = async (user,form) => {
+  const updateTodoService = async (user,data) => {
 
-    form = {
-      ...form,
-      "user_id":user.id
+    const dataUpdate = {
+      "id":data.id,
+      "state_id":data.state_id
     }
 
     if(user.token!=''){
       const configUser = {
-        method: 'POST',
+        method: 'PATCH',
         headers:{
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${user.token}`,
         },
-        body: JSON.stringify(form)
+        body: JSON.stringify(dataUpdate)
       }
       
-      await fetch('http://127.0.0.1:8000/todo/create_todo',configUser)
+      console.log(dataUpdate)
+      const result = await fetch('http://127.0.0.1:8000/todo/update_state_todo',configUser)
+      const parse_result = await result.json()
+      if(result.status==200){
+        alert(parse_result.message)
+      }
 
-      await fetchTodo(user)
     }
   }
 

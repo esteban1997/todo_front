@@ -1,6 +1,3 @@
-import React from 'react'
-import { useFetch } from '../hooks/useFetch'
-
 export const StateSelect = ({name,todoStates,state_id=0,onSelectChange=() => {}}) => {
 
   return (
