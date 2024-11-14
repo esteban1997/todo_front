@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react'
+import { useReducer} from 'react'
 import {UserContext} from './UserContext'
 
 export const UserProvider = ({children}) => {

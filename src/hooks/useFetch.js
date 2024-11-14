@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-export const useFetch = (url,type='GET',form={}) => {
+export const useFetch = (url) => {
 
   const [state, setState] = useState({
     data:null,

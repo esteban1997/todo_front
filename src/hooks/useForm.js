@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 export const useForm = (initialForm={}) => {
   
@@ -11,9 +11,18 @@ export const useForm = (initialForm={}) => {
     })
   }
 
+  const onSelectChange = (event) => {
+    const {name,value} = event.target
+    setFormState({
+      ...formState,
+      [name]:value
+    })
+  }
+
   return {
     ...formState,
     formState,
-    onInputChange
+    onInputChange,
+    onSelectChange
   }
 }

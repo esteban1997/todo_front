@@ -1,11 +1,19 @@
-import React, { useReducer} from 'react'
+import {useReducer} from 'react'
 import {TodoContext} from './TodoContext'
 
 export const TodoProvider = ({children}) => {
   
-  const updateProducts = (data) =>{
+  const setTodo = (data) =>{
     const action = {
       type:'[TODO] Actualizar todo',
+      payload:data
+    }
+    dispatch(action)
+  }
+  
+  const createTodo = (data) =>{
+    const action = {
+      type:'[TODO] Crear todo',
       payload:data
     }
     dispatch(action)
@@ -19,7 +27,7 @@ export const TodoProvider = ({children}) => {
     dispatch(action)
   }
   
-  const fetchProductos = async (user) => {
+  const fetchTodo = async (user) => {
     if(user.token!=''){
       const configUser = {
         method: 'GET',
@@ -32,10 +40,62 @@ export const TodoProvider = ({children}) => {
       const todo_response = await fetch('http://127.0.0.1:8000/todo/me/items/',configUser)
       const todo_data = await todo_response.json()
       if(todo_data[0].items&&todo_data[0].items.length>0){
-        updateProducts(todo_data[0].items);
+        setTodo(todo_data[0].items);
       }
     }else{
-      updateProducts([]);
+      setTodo([]);
+    }
+  }
+
+  const registerTodo = async (user,data) => {
+
+    data = {
+      ...data,
+      "user_id":user.id
+    }
+
+    if(user.token!=''){
+      const configUser = {
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`,
+        },
+        body: JSON.stringify(data)
+      }
+      
+      const result = await fetch('http://127.0.0.1:8000/todo/create_todo',configUser)
+      const parserResult = await result.json()
+      if(result.status==200){
+        createTodo(parserResult)
+      }
+    }
+  }
+
+  const updateTodoService = async (user,data) => {
+
+    const dataUpdate = {
+      "id":data.id,
+      "state_id":data.state_id
+    }
+
+    if(user.token!=''){
+      const configUser = {
+        method: 'PATCH',
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`,
+        },
+        body: JSON.stringify(dataUpdate)
+      }
+      
+      console.log(dataUpdate)
+      const result = await fetch('http://127.0.0.1:8000/todo/update_state_todo',configUser)
+      const parse_result = await result.json()
+      if(result.status==200){
+        alert(parse_result.message)
+      }
+
     }
   }
 
@@ -43,6 +103,8 @@ export const TodoProvider = ({children}) => {
     switch(action.type){
       case '[TODO] Actualizar todo':
         return action.payload
+      case '[TODO] Crear todo':
+        return [...state, action.payload]
       case '[TODO] Eliminar todo':
         return state.filter(compra=> compra.id!== action.payload)
       default:
@@ -53,7 +115,7 @@ export const TodoProvider = ({children}) => {
   const [todoList, dispatch] = useReducer(todoReducer, [])
   
   return (
-    <TodoContext.Provider value={{todoList,deleteTodo,fetchProductos}}>
+    <TodoContext.Provider value={{todoList,deleteTodo,fetchTodo,registerTodo,updateTodoService}}>
       {children}
     </TodoContext.Provider>
   )
