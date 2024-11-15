@@ -3,7 +3,7 @@ import { StateSelect } from './StateSelect'
 import { useForm } from '../hooks/useForm'
 import { UserContext } from '../context/UserContext'
 
-export const TodoForm = ({todoStates,registerTodo}) => {
+export const TodoForm = ({todoStates,registerTodoService}) => {
 
   const todoForm = {
     description:'',
@@ -17,18 +17,18 @@ export const TodoForm = ({todoStates,registerTodo}) => {
 
   const sendRegisterTodo = (event)=>{
     event.preventDefault()
-    registerTodo(user,formState)
+    registerTodoService(user,formState)
 
   }
 
   return (
     <>
-      <form onSubmit={sendRegisterTodo}>
+      <form onSubmit={sendRegisterTodo} className='card'>
         <div className="form-group">
           <label htmlFor="description">Descripcion</label>
-          <input 
+          <textarea 
           type="text" 
-          className="form-control" 
+          className="form-control margins" 
           id="description" 
           name="description" 
           value={formState.description}

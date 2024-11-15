@@ -1,0 +1,11 @@
+
+.button {
+  margin: 0; /* Elimina márgenes adicionales */
+  padding: 5px 10px;
+}
+
+/* Estilos para la tarjeta */
+.margins{
+  margin-bottom: 10px;
+  margin-top: 10px;
+}

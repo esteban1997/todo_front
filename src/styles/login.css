@@ -1,0 +1,49 @@
+.content-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.select-container {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.test{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.button-container{
+  display: flex;
+  gap: 10px; /* Espacio entre los botones */
+  flex: 0 0 20%; /* Ocupa aproximadamente tres columnas del espacio total */
+  justify-content: center;
+}
+
+.login-button {
+  background-color: #249b4b;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #208a43;
+}
+
+.logout-button {
+  background-color: #af4c4c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #a04545;
+}

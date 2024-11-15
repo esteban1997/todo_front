@@ -47,7 +47,7 @@ export const TodoProvider = ({children}) => {
     }
   }
 
-  const registerTodo = async (user,data) => {
+  const registerTodoService = async (user,data) => {
 
     data = {
       ...data,
@@ -99,6 +99,29 @@ export const TodoProvider = ({children}) => {
     }
   }
 
+  const deleteTodoService = async (user,id) => {
+
+    const data = {
+      "id":id
+    }
+
+    if(user.token!=''){
+      const configUser = {
+        method: 'DELETE',
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`,
+        },
+        body: JSON.stringify(data)
+      }
+      
+      const result = await fetch('http://127.0.0.1:8000/todo/delete_todo',configUser)
+      if(result.status==200){
+        deleteTodo(id)
+      }
+    }
+  }
+
   const todoReducer = (state = [],action={}) =>{
     switch(action.type){
       case '[TODO] Actualizar todo':
@@ -106,7 +129,7 @@ export const TodoProvider = ({children}) => {
       case '[TODO] Crear todo':
         return [...state, action.payload]
       case '[TODO] Eliminar todo':
-        return state.filter(compra=> compra.id!== action.payload)
+        return state.filter(todo=> todo.id!== action.payload)
       default:
         return state
     }
@@ -115,7 +138,7 @@ export const TodoProvider = ({children}) => {
   const [todoList, dispatch] = useReducer(todoReducer, [])
   
   return (
-    <TodoContext.Provider value={{todoList,deleteTodo,fetchTodo,registerTodo,updateTodoService}}>
+    <TodoContext.Provider value={{todoList,fetchTodo,registerTodoService,updateTodoService,deleteTodoService}}>
       {children}
     </TodoContext.Provider>
   )

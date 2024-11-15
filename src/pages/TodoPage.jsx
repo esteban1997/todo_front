@@ -4,10 +4,12 @@ import { TodoContext } from '../context/TodoContext'
 import { UserContext } from '../context/UserContext'
 import { useFetch } from '../hooks/useFetch'
 import { TodoForm } from '../component/TodoForm'
+import '../styles/general.css'
+import '../styles/card.css'
 
 export const TodoPage = () => {
 
-  const {todoList,deleteTodo,updateTodoService,fetchTodo,registerTodo} = useContext(TodoContext)
+  const {todoList,deleteTodoService,updateTodoService,fetchTodo,registerTodoService} = useContext(TodoContext)
   const {user} = useContext(UserContext)
 
   useEffect(() => {
@@ -22,7 +24,7 @@ export const TodoPage = () => {
 
   return (
     <>
-    <TodoForm todoStates={todoStates} registerTodo={registerTodo}></TodoForm>
+    <TodoForm todoStates={todoStates} registerTodoService={registerTodoService}></TodoForm>
     {todoList && todoList.length > 0 ? (
         todoList.map(todo =>
           <Card 
@@ -33,7 +35,7 @@ export const TodoPage = () => {
             description={todo.description} 
             origin_task={todo.origin_task} 
             state_id={todo.state_id} 
-            deleteTodo={deleteTodo}
+            deleteTodo={deleteTodoService}
             updateTodo={updateTodoService}
             user={user}
           />
